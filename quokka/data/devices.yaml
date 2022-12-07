@@ -1,0 +1,17 @@
+- id: 1
+  ip_address: "192.168.0.131"
+  name: "WS-C3650-24PD"
+  serial: "FDO2142Q262"
+  os: "IOS-XE"
+  transport: "napalm"
+  hostname: "SW-01"
+  vendor: "cisco"
+
+- id: 2
+  ip_address: "192.168.0.132"
+  name: "SM-ES3G-24-P"
+  serial: "FOC15277DXU"
+  os: "IOS"
+  transport: "napalm"
+  hostname: "ExSW.R00-CORE"
+  vendor: "cisco"

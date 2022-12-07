@@ -1,0 +1,12 @@
+{
+  "python.linting.pylintArgs": [
+    "--load-plugins",
+    "pylint-flask"
+  ],
+  "editor.tabSize": 4,
+  "editor.wordWrap": "on",
+  "editor.foldingStrategy": "indentation",
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true
+}

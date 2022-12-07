@@ -1,0 +1,736 @@
+!
+
+!
+version 16.6
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service compress-config
+service sequence-numbers
+no service dhcp
+no platform punt-keepalive disable-kernel-core
+!
+hostname 12DZ-SW-BLACK-ZWT
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging buffered 16000 informational
+logging rate-limit all 10 except errors
+logging console notifications
+enable secret 5 $1$lRhC$PedQMQ51kFwilagI5uN3q0
+!
+aaa new-model
+!
+!
+aaa authentication login default local-case
+aaa authentication login LOCAL_LIST local-case
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+!
+aaa session-id common
+boot system switch all flash:packages.conf
+clock timezone UTC 1 0
+clock summer-time CEST recurring last Sun Mar 2:00 last Sun Oct 3:00
+switch 1 provision ws-c3650-24pd
+!
+!
+!
+!
+no ip gratuitous-arps
+ip options drop
+!
+no ip bootp server
+no ip domain lookup
+ip domain name 12mdiv.int
+!
+!
+!
+login block-for 100 attempts 5 within 100
+login on-failure log
+login on-success log
+!
+!
+!
+!
+!
+vtp mode transparent
+!
+crypto pki trustpoint TP-self-signed-1862810536
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1862810536
+ revocation-check none
+ rsakeypair TP-self-signed-1862810536
+!
+!
+crypto pki certificate chain TP-self-signed-1862810536
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31383632 38313035 3336301E 170D3139 30363034 31323138 
+  34375A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 38363238 
+  31303533 36308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100A093 4DEA4931 CC9D8BAA C9CFBBA2 A9BC1FB3 B48FD87C 01204B5B 
+  97286E7B 8E62073E B352E428 529F661E 91E79305 7889B053 CEA9AC30 5F9AB0A5 
+  F076E2ED 640BF1D0 E6A4086B 8DAE533D AA07D84E AE29AC4B B3309FE2 F9E1D23D 
+  AFCE1D38 D35CDF66 50B3B5AB 9BD5AA61 A8815C30 431D4D16 86138F42 DF98A8FF 
+  1CE57769 C395D927 0F352257 874EED0C C6030EBE 5DBC5BEF FFF188D3 BAB33810 
+  00820ED8 FD4678F3 27252A83 DB50933E 233A10C5 0D25245B 154C9C04 7E238943 
+  D1FCFEBE B4275B8B 97798EE7 4063D870 CB764EA3 A47271DE 443DFA39 BA60BD41 
+  D1C24578 2FA97429 561146FE C0B44746 DEE4BD5C 73CFBB70 7D0FA91D 88E93C06 
+  06DFDCCC 73D90203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 146AD0EC 68FC7BD8 ACC4E152 45E40934 B52C788C 
+  09301D06 03551D0E 04160414 6AD0EC68 FC7BD8AC C4E15245 E40934B5 2C788C09 
+  300D0609 2A864886 F70D0101 05050003 82010100 51EAA9DD EBE5BB0A C0EF95B2 
+  8C47FCC9 D627D3A8 3952D89C 55500879 6C8262BB A1C85EDC 4118D764 6408BCC5 
+  2BA285A5 70380072 070B9B74 C6DC6356 C4C5FFF3 32FC30C2 4B39216A B289C3B9 
+  539951CF 8A7D95DA A4C233C6 6F96D7DC 12D64AF8 C71989DA 76C81A23 DE0975BF 
+  0D7CE8BE 3D70005E FCC79C97 5BBE7230 3E8A879C C8C2DA60 3F44145E 31CA94DF 
+  99FF873F DE204D5B 4AB6C569 13D1E6C7 F0370D6C 06CAA427 0B07CE9A 8217A178 
+  CB1480BA 4179BA58 6DCEB0B7 27E2FB1B A927A02D 003406B2 F3D001E5 80DECE69 
+  C5B63A9C 4D167556 18E87411 5FEEBBC9 B8F42095 54AF122D 12E567FF 9216D131 
+  A38646F8 EC5C4AD2 D4A39EB2 2687D10D 6590C062
+  	quit
+!
+!
+!
+diagnostic bootup level minimal
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+spanning-tree extend system-id
+!
+username admin12dz privilege 15 secret 5 $1$z8cb$3LgIh0n87z/V9Url9e/Jd0
+username technik12 privilege 15 secret 5 $1$N535$6EZhfiEvycAX4foV07hoG.
+username awiecek privilege 15 secret 5 $1$cOlK$riyiw39R4ZibjDM/.vRdz.
+username pzukowski privilege 15 secret 5 $1$C2Ts$OLERzcWsS.TwVae5EL0.g0
+username amarzec privilege 15 secret 5 $1$sd2F$TOUGKm8p91BpHGjsI3t/S1
+username dgajewski privilege 15 secret 5 $1$6XCS$.EsMBSWAY6B7LpZ9lmOyU0
+!
+redundancy
+ mode sso
+!
+!
+transceiver type all
+ monitoring
+vlan dot1q tag native 
+!
+vlan 10
+ name DATA-PMN
+!
+vlan 15
+ name MGMT-PMN
+!
+vlan 20
+ name V&V-PMN
+!
+vlan 24
+ name VOICE_ZONE
+!
+vlan 50
+ name MGMT
+!
+vlan 55
+ name MGMT-2kl
+!
+vlan 100
+ name MPLS-BGP-PMN
+!
+vlan 200
+ name VRF-12DZ
+!
+vlan 220
+ name SIP-2kl
+!
+vlan 230
+ name Services
+!
+vlan 250
+ name ZWT-LAN
+!
+vlan 400
+ name GN
+!
+vlan 420
+ name GN_ZSD
+!
+vlan 998
+ name TRUNK_NATIVE
+!
+vlan 999
+ name UNUSED_PORTS
+!
+vlan 1000
+ name ALIEN
+!
+!
+class-map match-any system-cpp-police-topology-control
+  description Topology control
+class-map match-any system-cpp-police-sw-forward
+  description Sw forwarding, L2 LVX data, LOGGING
+class-map match-any system-cpp-default
+  description DHCP Snooping, EWLC control, EWCL data 
+class-map match-any system-cpp-police-sys-data
+  description Learning cache ovfl, Crypto Control, Exception, EGR Exception, NFL SAMPLED DATA, RPF Failed
+class-map match-any system-cpp-police-punt-webauth
+  description Punt Webauth
+class-map match-any system-cpp-police-l2lvx-control
+  description L2 LVX control packets
+class-map match-any system-cpp-police-forus
+  description Forus Address resolution and Forus traffic
+class-map match-any system-cpp-police-multicast-end-station
+  description MCAST END STATION
+class-map match-any system-cpp-police-multicast
+  description Transit Traffic and MCAST Data
+class-map match-any system-cpp-police-l2-control
+  description L2 control
+class-map match-any system-cpp-police-dot1x-auth
+  description DOT1X Auth
+class-map match-any system-cpp-police-data
+  description ICMP redirect, ICMP_GEN and BROADCAST
+class-map match-any system-cpp-police-stackwise-virt-control
+  description Stackwise Virtual
+class-map match-any system-cpp-police-control-low-priority
+  description ICMP redirect and general punt
+class-map match-any system-cpp-police-wireless-priority1
+  description Wireless priority 1
+class-map match-any system-cpp-police-wireless-priority2
+  description Wireless priority 2
+class-map match-any system-cpp-police-wireless-priority3-4-5
+  description Wireless priority 3,4 and 5
+class-map match-any non-client-nrt-class
+class-map match-any system-cpp-police-routing-control
+  description Routing control
+class-map match-any system-cpp-police-protocol-snooping
+  description Protocol snooping
+class-map match-any system-cpp-police-system-critical
+  description System Critical and Gold
+!
+policy-map system-cpp-policy
+ class system-cpp-police-data
+  police rate 200 pps
+ class system-cpp-police-routing-control
+  police rate 1800 pps
+ class system-cpp-police-control-low-priority
+ class system-cpp-police-wireless-priority1
+ class system-cpp-police-wireless-priority2
+ class system-cpp-police-wireless-priority3-4-5
+policy-map port_child_policy
+ class non-client-nrt-class
+  bandwidth remaining ratio 10
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description TRUNK do 12DZ-SW-BLACK-CORE (ZWS-20)
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet0/0
+ vrf forwarding Mgmt-vrf
+ no ip address
+ no ip redirects
+ speed 1000
+ negotiation auto
+!
+interface GigabitEthernet1/0/1
+ description amarzec-laptop
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/0/2
+ description UNUSED_PORT
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/3
+ description iLO-HPE-01
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 98f2.b333.1a6e
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/4
+ description iLO-HPE-02
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 98f2.b333.05c0
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/5
+ description TRUNK to MGMT-HPE01
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/6
+ description ESXi-HPE-02
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/7
+ description dgajewski-laptop
+ switchport trunk allowed vlan 50,55,230,250,400,410,1000
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/8
+ description Daniel-LAPTOP
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/9
+ description MGMT_ZONE -> R02-Gig0/2
+ switchport access vlan 15
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security mac-address sticky
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/10
+ description TRUNK - SERWER LENOVO CYBER-TOOLS - ETH0/0
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ storm-control broadcast level 75.00
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/11
+ description ddaniluk laptop mgmt
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security mac-address sticky
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/12
+ description TRUNK -> Laptop Sawika
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/0/13
+ description TRUNK -> SERWER-HP01-APP
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/14
+ description SERWER-HP02-APP
+ switchport access vlan 230
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/15
+ description pom.10 - Szef ZWT - TRUNK#2 Laptop MGMT
+ switchport mode trunk
+ switchport nonegotiate
+ switchport block multicast
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/16
+ description pom.10 - Szef ZWT - VLAN1000 - ALIEN
+ switchport access vlan 1000
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 15
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 000c.29c3.e165
+ switchport port-security mac-address sticky 0050.5667.628a
+ switchport port-security mac-address sticky 6805.ca42.0503
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/17
+ description UNUSED_PORT
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ switchport block multicast
+ switchport block unicast
+ switchport port-security mac-address sticky
+ switchport port-security
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/18
+ description TRUNK do Sawika
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ no cdp enable
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/19
+ description ZWT-LAN VLAN 250
+ switchport access vlan 250
+ switchport mode access
+ switchport nonegotiate
+ no cdp enable
+ storm-control broadcast level 75.00
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/20
+ description TEMP VLAN15 -> R02-VTC -> Gig 0/2
+ switchport access vlan 15
+ switchport trunk native vlan 998
+ switchport mode access
+ switchport nonegotiate
+ no lldp transmit
+ no lldp receive
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/21
+ description TEMP trunk -> R02-VTC-T -> Gig 0/1
+ switchport trunk native vlan 998
+ switchport trunk allowed vlan 10,20
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree portfast trunk
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/0/22
+ description TRUNK do 12DZ-SW-BLACK-CORE
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode desirable
+ spanning-tree portfast trunk
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/0/23
+ description TRUNK do 12DZ-SW-BLACK-CORE
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode desirable
+ spanning-tree portfast trunk
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/0/24
+ description TRUNK do 12DZ-SW-BLACK-CORE
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode desirable
+ spanning-tree portfast trunk
+ spanning-tree bpduguard disable
+!
+interface GigabitEthernet1/1/1
+ description TRUNK do 12DZ-SW-BLACK-WTI
+ switchport trunk allowed vlan 50,100,200
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet1/1/2
+ description UNUSED_PORT
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ shutdown
+!
+interface TenGigabitEthernet1/1/3
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ shutdown
+!
+interface TenGigabitEthernet1/1/4
+ description UNUSED_PORTS
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ shutdown
+!
+interface Vlan1
+ no ip address
+ no ip redirects
+ no ip proxy-arp
+ no ip route-cache
+ shutdown
+!
+interface Vlan10
+ no ip address
+!
+interface Vlan15
+ no ip address
+!
+interface Vlan50
+ description Interface MGMT_ZONE
+ ip address 11.102.8.132 255.255.255.128
+ no ip redirects
+ no ip proxy-arp
+!
+interface Vlan100
+ ip address 11.255.192.100 255.255.255.248
+!
+interface Vlan200
+ ip address 172.20.30.19 255.255.255.248
+!
+interface Vlan250
+ ip address 192.168.85.113 255.255.255.0
+!
+interface Vlan1000
+ ip address 192.168.100.253 255.255.255.0
+!
+ip forward-protocol nd
+no ip http server
+ip http authentication local
+no ip http secure-server
+ip ssh time-out 60
+ip ssh authentication-retries 2
+ip ssh version 2
+ip ssh pubkey-chain
+  username admin12dz
+   key-hash ssh-rsa 98AF5A0FAE6D26E9CA5EE653E78BD9BB 
+   key-hash ssh-rsa 76A5C9974D988FA37AAE57E4EA169140 
+  username amarzec
+   key-hash ssh-rsa 08676C1F061B14A163F6350BFC25BF19 
+!
+ip access-list extended AutoQos-4.0-wlan-Acl-Bulk-Data
+ permit tcp any any eq 22
+ permit tcp any any eq 465
+ permit tcp any any eq 143
+ permit tcp any any eq 993
+ permit tcp any any eq 995
+ permit tcp any any eq 1914
+ permit tcp any any eq ftp
+ permit tcp any any eq ftp-data
+ permit tcp any any eq smtp
+ permit tcp any any eq pop3
+ip access-list extended AutoQos-4.0-wlan-Acl-MultiEnhanced-Conf
+ permit udp any any range 16384 32767
+ permit tcp any any range 50000 59999
+ip access-list extended AutoQos-4.0-wlan-Acl-Scavanger
+ permit tcp any any range 2300 2400
+ permit udp any any range 2300 2400
+ permit tcp any any range 6881 6999
+ permit tcp any any range 28800 29100
+ permit tcp any any eq 1214
+ permit udp any any eq 1214
+ permit tcp any any eq 3689
+ permit udp any any eq 3689
+ permit tcp any any eq 11999
+ip access-list extended AutoQos-4.0-wlan-Acl-Signaling
+ permit tcp any any range 2000 2002
+ permit tcp any any range 5060 5061
+ permit udp any any range 5060 5061
+ip access-list extended AutoQos-4.0-wlan-Acl-Transactional-Data
+ permit tcp any any eq 443
+ permit tcp any any eq 1521
+ permit udp any any eq 1521
+ permit tcp any any eq 1526
+ permit udp any any eq 1526
+ permit tcp any any eq 1575
+ permit udp any any eq 1575
+ permit tcp any any eq 1630
+ permit udp any any eq 1630
+ permit tcp any any eq 1527
+ permit tcp any any eq 6200
+ permit tcp any any eq 3389
+ permit tcp any any eq 5985
+ permit tcp any any eq 8080
+ip access-list extended SSH-ACCESS
+ permit tcp host 11.102.8.130 any eq 22 log-input
+ permit tcp host 11.102.8.138 any eq 22 log-input
+ permit tcp host 11.102.8.140 any eq 22 log-input
+ permit tcp host 11.102.8.141 any eq 22 log-input
+ permit tcp host 11.102.8.142 any eq 22 log-input
+ deny   tcp any any range 0 65535 log-input
+ deny   ip any any log-input
+!
+logging facility local6
+logging host 11.102.8.251
+!
+!
+!
+!
+!
+control-plane
+ service-policy input system-cpp-policy
+!
+banner login ^C
+--------------------------------------------------------------------------
+*                                                                        *
+*   This system operates in NATO SYSTEM HIGH mode of operation.          *
+*                                                                        *
+*                                                                        *
+* By accessing and using this system you are consenting to system        *
+* monitoring for law enforcement and other purpose. UNAUTHORIZED use     *
+* of this system may subject you to criminal procesuition and penalties. *
+*                                                                        *
+*                                                                        *
+--------------------------------------------------------------------------
+^C
+!
+line con 0
+ privilege level 15
+ logging synchronous
+ login authentication LOCAL_LIST
+ transport preferred ssh
+ transport output ssh
+ stopbits 1
+line aux 0
+ access-class 13 in
+ exec-timeout 0 1
+ login authentication LOCAL_LIST
+ no exec
+ transport preferred none
+ transport output none
+ stopbits 1
+line vty 0 4
+ access-class SSH-ACCESS in vrf-also
+ exec-timeout 5 0
+ privilege level 15
+ logging synchronous
+ login authentication LOCAL_LIST
+ transport preferred ssh
+ transport input ssh
+ transport output none
+line vty 5 15
+ access-class 13 in
+ exec-timeout 0 1
+ login authentication LOCAL_LIST
+ transport preferred none
+ transport input none
+ transport output none
+!
+ntp logging
+ntp source Vlan50
+ntp server 11.102.8.250
+!
+mac address-table notification mac-move
+!
+!
+!
+!
+!
+end
